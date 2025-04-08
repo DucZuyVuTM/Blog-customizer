@@ -14,6 +14,7 @@ import styles from './Select.module.scss';
 
 type SelectProps = {
 	selected: OptionType | null;
+	unavailable?: OptionType | null;
 	options: OptionType[];
 	placeholder?: string;
 	onChange?: (selected: OptionType) => void;
@@ -21,8 +22,15 @@ type SelectProps = {
 	title?: string;
 };
 
-export const Select = (props: SelectProps) => {
-	const { options, placeholder, selected, onChange, onClose, title } = props;
+export const Select = ({
+	selected,
+	unavailable,
+	options,
+	placeholder,
+	onChange,
+	onClose,
+	title,
+}: SelectProps) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const rootRef = useRef<HTMLDivElement>(null);
 	const placeholderRef = useRef<HTMLDivElement>(null);
@@ -90,7 +98,11 @@ export const Select = (props: SelectProps) => {
 				{isOpen && (
 					<ul className={styles.select} data-testid='selectDropdown'>
 						{options
-							.filter((option) => selected?.value !== option.value)
+							.filter(
+								(option) =>
+									option.value !== selected?.value &&
+									option.value !== unavailable?.value
+							)
 							.map((option) => (
 								<Option
 									key={option.value}

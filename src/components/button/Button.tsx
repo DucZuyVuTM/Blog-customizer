@@ -8,11 +8,16 @@ export const Button = ({
 	type,
 }: {
 	title: string;
-	onClick?: () => void;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
 }) => {
 	return (
-		<button className={styles.button} type={type} onClick={onClick}>
+		<button
+			className={type === 'reset' ? styles.reset_button : styles.submit_button}
+			type={type}
+			onClick={(e) => {
+				if (onClick) onClick(e);
+			}}>
 			<Text weight={800} uppercase>
 				{title}
 			</Text>
